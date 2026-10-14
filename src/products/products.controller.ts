@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, Query, Optional } from '@nestjs/common';
 import { ProductsService } from './products.service.js';
 import { CreateProductDto } from './dto/create-product.dto.js';
 import { UpdateProductDto } from './dto/update-product.dto.js';
@@ -14,9 +14,9 @@ export class ProductsController {
    return createProductDto; */
   }
 
-  @Get()
-  findAll() {
-    return this.productsService.findAll();
+  @Get()  
+  findAll(@Query("category") category?: string) {
+    return this.productsService.findAll(category);
   }
 
   @Get(':id')

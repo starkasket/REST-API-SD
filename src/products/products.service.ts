@@ -7,15 +7,22 @@ import { v4 as Uuidv4 } from 'uuid';
 @Injectable()
 export class ProductsService {
   private products: Product[] = [];
-
   create(createProductDto: CreateProductDto) {
-    const { name, description, price } = createProductDto;
-    const newProduct = new Product(Uuidv4(), name, price, description);
+    const { name, description, price, stock, category } = createProductDto;
+    if (stock <0) {
+      return {
+      status: 402,
+      msg: "Stock debe de ser positivo",
+    };
+    }
+    const newProduct = new Product(Uuidv4(), name, price, stock, category,description);
     this.products.push(newProduct);
     return newProduct;
   }
 
-  findAll() {
+  //Otro comentario.
+
+  findAll(category?: string) {
     return this.products;
   }
 
@@ -29,9 +36,9 @@ export class ProductsService {
   }
 
   update(id: string, updateProductDto: UpdateProductDto) {
-    const { name, description, price } = updateProductDto;
+    const { name, description, price, stock, category } = updateProductDto;
     const product = this.findOne(id);
-    product.updateWith({ name, description, price });
+    product.updateWith({ name, description, price, stock, category });
 
     return product;
   }
